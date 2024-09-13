@@ -1,42 +1,53 @@
-# API de Vacaciones
-## Descripción
-Esta API permite gestionar vacaciones mediante métodos HTTP. La API utiliza un archivo JSON para almacenar los registros de vacaciones.
+# 🌴 API de Vacaciones 🌴
 
-### Endpoints
-#### GET /vacaciones
-Devuelve la lista completa de vacaciones.
+## 📄 Descripción
+<p>Esta API permite gestionar vacaciones mediante métodos HTTP. La API utiliza un archivo JSON para almacenar los registros de vacaciones.</p>
 
-#### GET /vacaciones/:id
-Devuelve un registro de vacaciones específico por su ID.
+## 🌐 Endpoints
+### 📋 GET /vacaciones
+<p>Devuelve la lista completa de vacaciones.</p>
 
-#### POST /vacaciones
-Crea un nuevo registro de vacaciones.
+### 🔍 GET /vacaciones/:id
+<p>Devuelve un registro de vacaciones específico por su ID.</p>
 
-#### PUT /vacaciones/:id
-Actualiza un registro de vacaciones específico por su ID.
+### ➕ POST /vacaciones
+<p>Crea un nuevo registro de vacaciones.</p>
 
-#### DELETE /vacaciones/:id
-Elimina un registro de vacaciones específico por su ID.
+### ✏️ PUT /vacaciones/:id
+<p>Actualiza un registro de vacaciones específico por su ID.</p>
 
-## Instalación
-1. Clona el repositorio: `` `git clone https://github.com/ramiroec/vacaciones-api.git` ``
-2. Instala las dependencias: `` `npm install` ``
-3. Inicia la API: `` `node app.js` ``
+### 🗑️ DELETE /vacaciones/:id
+<p>Elimina un registro de vacaciones específico por su ID.</p>
 
-## Uso
-La API se encuentra disponible en `http://localhost:3000`. Puedes utilizar herramientas como Postman o cURL para interactuar con la API.
+## 🛠️ Instalación
+<ol>
+  <li>Clona el repositorio: 
+    <pre><code>git clone https://github.com/ramiroec/vacaciones-api.git</code></pre>
+  </li>
+  <li>Instala las dependencias: 
+    <pre><code>npm install</code></pre>
+  </li>
+  <li>Inicia la API: 
+    <pre><code>node app.js</code></pre>
+  </li>
+</ol>
 
-## Estructura del proyecto
-* **app.js**: Archivo principal de la API.
-* **index.html**: Página principal de la aplicación.
-* **calendario.html**: Página de calendario de la aplicación.
-* **vacaciones.json**: Archivo de datos de vacaciones.
+## 🚀 Uso
+<p>La API se encuentra disponible en <code>http://localhost:3000</code>. Puedes utilizar herramientas como Postman o cURL para interactuar con la API.</p>
 
-## Licencia
-Este proyecto se encuentra bajo la licencia MIT.
+## 📁 Estructura del proyecto
+<ul>
+  <li><strong>app.js</strong>: Archivo principal de la API.</li>
+  <li><strong>index.html</strong>: Página principal de la aplicación.</li>
+  <li><strong>calendario.html</strong>: Página de calendario de la aplicación.</li>
+  <li><strong>vacaciones.json</strong>: Archivo de datos de vacaciones.</li>
+</ul>
 
-## Autor
-Ramiro Estigarribia Canese
+## 📜 Licencia
+<p>Este proyecto se encuentra bajo la licencia MIT.</p>
 
-## Contribuciones
-Si deseas contribuir a este proyecto, por favor, crea un pull request con tus cambios.
+## 👤 Autor
+<p>Ramiro Estigarribia Canese</p>
+
+## 🤝 Contribuciones
+<p>Si deseas contribuir a este proyecto, por favor, crea un pull request con tus cambios.</p>
