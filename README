@@ -1,0 +1,42 @@
+# API de Vacaciones
+## Descripción
+Esta API permite gestionar vacaciones mediante métodos HTTP. La API utiliza un archivo JSON para almacenar los registros de vacaciones.
+
+### Endpoints
+#### GET /vacaciones
+Devuelve la lista completa de vacaciones.
+
+#### GET /vacaciones/:id
+Devuelve un registro de vacaciones específico por su ID.
+
+#### POST /vacaciones
+Crea un nuevo registro de vacaciones.
+
+#### PUT /vacaciones/:id
+Actualiza un registro de vacaciones específico por su ID.
+
+#### DELETE /vacaciones/:id
+Elimina un registro de vacaciones específico por su ID.
+
+## Instalación
+1. Clona el repositorio: `` `git clone https://github.com/ramiroec/vacaciones-api.git` ``
+2. Instala las dependencias: `` `npm install` ``
+3. Inicia la API: `` `node app.js` ``
+
+## Uso
+La API se encuentra disponible en `http://localhost:3000`. Puedes utilizar herramientas como Postman o cURL para interactuar con la API.
+
+## Estructura del proyecto
+* **app.js**: Archivo principal de la API.
+* **index.html**: Página principal de la aplicación.
+* **calendario.html**: Página de calendario de la aplicación.
+* **vacaciones.json**: Archivo de datos de vacaciones.
+
+## Licencia
+Este proyecto se encuentra bajo la licencia MIT.
+
+## Autor
+Ramiro Estigarribia Canese
+
+## Contribuciones
+Si deseas contribuir a este proyecto, por favor, crea un pull request con tus cambios.
