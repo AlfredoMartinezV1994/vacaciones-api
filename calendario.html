@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendario de Vacaciones</title>
+
+    <!-- Cargar CSS de Materialize para estilos generales -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Iconos de Material Design -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Cargar FullCalendar y sus dependencias -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+
+    <!-- Estilos personalizados para que el calendario se vea como Material Design -->
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container {
+            margin-top: 40px;
+        }
+
+        #calendar {
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .fc-toolbar {
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .fc-button {
+            background-color: #6200ea !important;
+            color: white !important;
+            border: none;
+            margin: 0 2px;
+            transition: background-color 0.3s ease;
+        }
+
+        .fc-button:hover {
+            background-color: #3700b3 !important;
+        }
+
+        .fc-daygrid-event {
+            border: none;
+            color: #000;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        .btn-primary, .btn-outline-primary {
+            background-color: #6200ea !important;
+        }
+
+        .btn-primary:hover, .btn-outline-primary:hover {
+            background-color: #3700b3 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado con el título del calendario y un enlace al inicio -->
+        <div class="row">
+            <div class="col s12">
+                <h4>Calendario de Vacaciones</h4>
+                <!-- Enlace para regresar a la página de inicio -->
+                <a href="/" class="btn waves-effect waves-light right">Ir al Inicio</a>
+            </div>
+        </div>
+
+        <!-- Contenedor del calendario con estilos de Material Design -->
+        <div id="calendar"></div>
+    </div>
+
+    <!-- Cargar Axios para solicitudes HTTP -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Scripts de Materialize para el JavaScript de Material Design -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        const API_URL = '/vacaciones';
+
+        function getRandomColor() {
+            // Genera un color hexadecimal aleatorio
+            return '#' + Math.floor(Math.random()*16777215).toString(16);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarEl = document.getElementById('calendar');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                locale: 'es',
+                themeSystem: 'standard', // Cambiar a 'standard' para estilos personalizados
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                events: function(fetchInfo, successCallback, failureCallback) {
+                    axios.get(API_URL)
+                        .then(response => {
+                            const eventos = response.data.map(vacacion => ({
+                                title: `${vacacion.nombre} ${vacacion.apellido}`,
+                                start: vacacion.fecha_inicial,
+                                end: vacacion.fecha_final,
+                                id: vacacion.id,
+                                backgroundColor: getRandomColor(), // Asigna un color aleatorio a cada evento
+                                borderColor: '#000', // Opcional: puedes definir el color del borde si lo deseas
+                            }));
+                            successCallback(eventos);
+                        })
+                        .catch(error => {
+                            console.error('Error al obtener vacaciones:', error);
+                            failureCallback(error);
+                        });
+                },
+                eventClick: function(info) {
+                    M.toast({html: `Vacaciones de ${info.event.title}`, classes: 'rounded'});
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+</body>
+</html>

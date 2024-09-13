@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Vacaciones</title>
+
+    <!-- Cargar Materialize CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Iconos de Material Design -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        body {
+            background-color: #f4f4f9;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .container {
+            margin-top: 40px;
+        }
+
+        .card-header {
+            background-color: #6200ea;
+            color: white;
+            font-size: 1.2rem;
+            padding: 10px 20px;
+            border-radius: 4px 4px 0 0;
+        }
+
+        .btn-primary, .btn-outline-primary {
+            background-color: #6200ea;
+        }
+
+        .btn-primary:hover, .btn-outline-primary:hover {
+            background-color: #3700b3;
+        }
+
+        .btn-danger {
+            background-color: #d32f2f;
+        }
+
+        .btn-danger:hover {
+            background-color: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado con enlace al calendario -->
+        <div class="row">
+            <div class="col s12">
+                <h4>Gestión de Vacaciones</h4>
+                <a href="/calendario" class="btn waves-effect waves-light right">Ver Calendario</a>
+            </div>
+        </div>
+
+        <!-- Formulario para añadir o actualizar vacaciones -->
+        <div class="card">
+            <div class="card-header">Añadir/Actualizar Vacaciones</div>
+            <div class="card-content">
+                <form id="vacaciones-form">
+                    <div class="input-field">
+                        <input type="text" id="nombre" required>
+                        <label for="nombre">Nombre</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="apellido" required>
+                        <label for="apellido">Apellido</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="fecha_inicial" class="datepicker" required>
+                        <label for="fecha_inicial">Fecha Inicial</label>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="fecha_final" class="datepicker" required>
+                        <label for="fecha_final">Fecha Final</label>
+                    </div>
+                    <input type="hidden" id="vacacion-id">
+                    <button type="submit" class="btn waves-effect waves-light">Guardar</button>
+                    <button type="reset" class="btn-flat waves-effect">Limpiar</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista de vacaciones -->
+        <div class="card">
+            <div class="card-header">Lista de Vacaciones</div>
+            <div class="card-content">
+                <ul id="vacaciones-list" class="collection"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts de Materialize para inicializar componentes -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <script>
+        const API_URL = '/vacaciones';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar todos los componentes automáticamente
+            M.AutoInit();
+
+            // Inicializar datepicker con configuración específica
+            const datepickerElems = document.querySelectorAll('.datepicker');
+            M.Datepicker.init(datepickerElems, {
+                format: 'yyyy-mm-dd', // Formato de la fecha
+                i18n: {
+                    cancel: 'Cancelar',
+                    clear: 'Limpiar',
+                    done: 'Aceptar',
+                    months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    weekdays: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+                    weekdaysAbbrev: ['D', 'L', 'M', 'M', 'J', 'V', 'S']
+                },
+                onClose: function() {
+                    this.el.blur(); // Cierra el datepicker y actualiza el campo
+                }
+            });
+
+            obtenerVacaciones();
+        });
+
+        // Obtener y mostrar todas las vacaciones
+        function obtenerVacaciones() {
+            axios.get(API_URL)
+                .then(response => {
+                    const vacaciones = response.data;
+                    const lista = document.getElementById('vacaciones-list');
+                    lista.innerHTML = '';
+                    vacaciones.forEach(vacacion => {
+                        const item = document.createElement('li');
+                        item.className = 'collection-item avatar';
+                        item.innerHTML = `
+                            <i class="material-icons circle">event</i>
+                            <span class="title"><strong>${vacacion.nombre} ${vacacion.apellido}</strong></span>
+                            <p>${vacacion.fecha_inicial} a ${vacacion.fecha_final}</p>
+                            <a href="#!" class="secondary-content">
+                                <button class="btn-small btn-primary" onclick="editarVacacion(${vacacion.id})">Editar</button>
+                                <button class="btn-small btn-danger" onclick="eliminarVacacion(${vacacion.id})">Eliminar</button>
+                            </a>
+                        `;
+                        lista.appendChild(item);
+                    });
+                })
+                .catch(error => console.error('Error al obtener vacaciones:', error));
+        }
+
+        // Añadir o actualizar vacaciones
+        document.getElementById('vacaciones-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('vacacion-id').value;
+            const nombre = document.getElementById('nombre').value;
+            const apellido = document.getElementById('apellido').value;
+            const fecha_inicial = document.getElementById('fecha_inicial').value;
+            const fecha_final = document.getElementById('fecha_final').value;
+
+            const vacacion = { nombre, apellido, fecha_inicial, fecha_final };
+
+            if (id) {
+                axios.put(`${API_URL}/${id}`, vacacion)
+                    .then(() => {
+                        obtenerVacaciones();
+                        this.reset();
+                    })
+                    .catch(error => console.error('Error al actualizar vacaciones:', error));
+            } else {
+                axios.post(API_URL, vacacion)
+                    .then(() => {
+                        obtenerVacaciones();
+                        this.reset();
+                    })
+                    .catch(error => console.error('Error al añadir vacaciones:', error));
+            }
+        });
+
+        // Editar vacaciones
+        function editarVacacion(id) {
+            axios.get(`${API_URL}/${id}`)
+                .then(response => {
+                    const vacacion = response.data;
+                    document.getElementById('vacacion-id').value = vacacion.id;
+                    document.getElementById('nombre').value = vacacion.nombre;
+                    document.getElementById('apellido').value = vacacion.apellido;
+                    document.getElementById('fecha_inicial').value = vacacion.fecha_inicial;
+                    document.getElementById('fecha_final').value = vacacion.fecha_final;
+                    M.updateTextFields(); // Actualiza los labels de los campos
+                })
+                .catch(error => console.error('Error al obtener vacación:', error));
+        }
+
+        // Eliminar vacaciones
+        function eliminarVacacion(id) {
+            if (confirm('¿Está seguro de que desea eliminar?')) {
+                axios.delete(`${API_URL}/${id}`)
+                    .then(() => obtenerVacaciones())
+                    .catch(error => console.error('Error al eliminar vacaciones:', error));
+            }
+        }
+    </script>
+</body>
+</html>
