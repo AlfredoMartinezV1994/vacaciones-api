@@ -114,6 +114,7 @@ app.delete('/vacaciones/:id', (req, res) => {
         writeDatabase(newData);
         // Enviar una respuesta con código de estado 204 (Sin contenido)
         res.status(204).send();
+        console.log("Eliminado con exito");
     } else {
         // Enviar un error 404 si el registro no fue encontrado
         res.status(404).send('Registro no encontrado');
