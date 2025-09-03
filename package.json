@@ -1,16 +1,27 @@
 {
   "name": "vacaciones-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "description": "API para gestionar vacaciones usando Express y SQLite.",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"No hay pruebas definidas aún\" && exit 0"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "vacaciones",
+    "api",
+    "express",
+    "sqlite"
+  ],
+  "author": "Ramiro",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "body-parser": "^1.20.3",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
