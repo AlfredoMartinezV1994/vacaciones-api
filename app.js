@@ -6,7 +6,7 @@ const path = require('path');
 
 // Crear una instancia de la aplicación Express
 const app = express();
-const port = 3000;
+const port = 4000;
 
 // Inicializar la base de datos SQLite
 const db = new sqlite3.Database('./vacaciones.db');
